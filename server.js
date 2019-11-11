@@ -13,10 +13,11 @@ app.use(bodyParser.json());
 // agroup archive of routes
 app.use(require('./routes/index'));
 
-//connection to base data
-mongoose.connect('mongodb://localhost:27017/cafeteria', 
+//connection to database
+mongoose.connect(process.env.URLDB, 
 { useNewUrlParser: true, 
-useUnifiedTopology: true, }, 
+useUnifiedTopology: true, 
+useCreateIndex: true }, 
 
 (err, resp)=>{
     if(err) throw err;
