@@ -2,11 +2,18 @@ const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
+const {verificaToken} = require('../middlewares/autenticacion')
 
 const Usuario = require('../models/usuario');
 
-app.get('/usuario', (req, res) =>{
+app.get('/usuario/:desde/:limite', /*[verificaToken],*/ (req, res) =>{
+    let desde = req.params.desde || 0;
+    let limite = req.params.limite || 5;
+    desde = Number(desde);
+    limite = Number(limite);
     Usuario.find({ estado: true })
+    .skip(desde)
+    .limit(limite)
     .exec((err, usuarios) =>{
         if(err){
             return res.status(400).json({
@@ -24,7 +31,7 @@ app.get('/usuario', (req, res) =>{
 });
 
 
-app.post('/usuario', (req, res) =>{
+app.post('/usuario', [verificaToken], (req, res) =>{
     let body = req.body;
 
     let usuario = new Usuario({
@@ -48,7 +55,7 @@ app.post('/usuario', (req, res) =>{
     });
 });
 
-app.put('/usuario/:id', (req, res) =>{
+app.put('/usuario/:id', [verificaToken], (req, res) =>{
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'estado', 'role', 'img']);
     
@@ -67,7 +74,7 @@ app.put('/usuario/:id', (req, res) =>{
     });
 });
 
-app.delete('/usuario/:id', (req, res) =>{
+app.delete('/usuario/:id', [verificaToken], (req, res) =>{
     let id = req.params.id;
     // Usuario.deleteOne({_id: id }, (err, resp) =>{
     //     if(err){

@@ -24,6 +24,10 @@ let productoSchema = new Schema({
         type: Boolean,
         default: true
     },
+    img: {
+        type: String,
+        required: [true, 'Por favor ingresa la imagen']
+    },
     usuario:{
         type: Schema.Types.ObjectId,
         ref: 'Usuario',

@@ -23,7 +23,7 @@ let usuarioSchema = new Schema({
     },
     img:{
         type: String,
-        required: [true, 'Por favor inserta una imagen']
+        //required: [true, 'Por favor inserta una imagen']
     },
     estado: {
         type: Boolean,

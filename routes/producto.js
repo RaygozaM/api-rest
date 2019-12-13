@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const _ = require('underscore');
 const Producto = require('../models/producto');
+const {verificaToken} = require('../middlewares/autenticacion');
 
-app.post('/producto', (req, res)=>{
+app.post('/producto', [verificaToken], (req, res)=>{
     let body = req.body;
     
     let producto = new Producto({
@@ -28,7 +29,7 @@ app.post('/producto', (req, res)=>{
 });
 
 
-app.put('/producto/:id', (req, res) =>{
+app.put('/producto/:id',/* [verificaToken],*/ (req, res) =>{
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'precioUni', 'categoria', 'disponible', 'usuario']);
     
